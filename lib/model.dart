@@ -1,5 +1,7 @@
 import 'package:moor_flutter/moor_flutter.dart';
 
+part 'model.g.dart';
+
 class Task extends Table {
   IntColumn get id => integer().autoIncrement()();
 
@@ -18,17 +20,6 @@ class Color extends Table {
   TextColumn get name => text()();
 
   TextColumn get hexCode => text().withLength(max: 6)();
-
-/*static List<Color> fetchAll() {
-    return [
-      Color('Maya Blue', '5FC9F8'),
-      Color('Sunglow', 'FECB2E'),
-      Color('Radical Red', 'FC3158'),
-      Color('Blue (Crayola)', '147EFB'),
-      Color('Emerald', '53D769'),
-      Color('Coral Red', 'FC3D39'),
-    ];
-  }*/
 }
 
 class Subject extends Table {
@@ -54,9 +45,32 @@ class Teacher extends Table {
 }
 
 class SubjectWithTasksTeachersAndColor {
+  final Subject subject;
   final List<Teacher> teachers;
   final List<Task> tasks;
   final Color color;
 
-  SubjectWithTasksTeachersAndColor(this.teachers, this.tasks, this.color);
+  SubjectWithTasksTeachersAndColor(this.subject, this.teachers, this.tasks,
+      this.color);
+}
+
+@UseMoor(tables: [Subject, Task, Color, Teacher])
+class DataBase extends _$DataBase {
+  DataBase()
+      : super(FlutterQueryExecutor.inDatabaseFolder(
+    path: 'fhmanager.sqlite',
+    logStatements: true,
+  ));
+
+  @override
+  int get schemaVersion => 1;
+
+  void initDb() {
+    into(color).insert(ColorData(name: 'Maya Blue', hexCode: '5FC9F8'));
+    into(color).insert(ColorData(name: 'Sunglow', hexCode: 'FECB2E'));
+    into(color).insert(ColorData(name: 'Radical Red', hexCode: 'FC3158'));
+    into(color).insert(ColorData(name: 'Blue (Crayola)', hexCode: '147EFB'));
+    into(color).insert(ColorData(name: 'Emerald', hexCode: '53D769'));
+    into(color).insert(ColorData(name: 'Coral Red', hexCode: 'FC3D39'));
+  }
 }
