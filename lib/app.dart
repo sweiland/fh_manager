@@ -1,14 +1,18 @@
 import 'package:flutter/cupertino.dart';
 
-import 'calendar_tab.dart'; // NEW
-import 'home_tab.dart'; // NEW
-import 'settings_tab.dart'; // NEW
+import 'calendar_tab.dart';
+import 'home_tab.dart';
+import 'settings_tab.dart';
 
 class CupertinoManageApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
       home: CupertinoManageHomePage(),
+      theme: CupertinoThemeData(
+        brightness: Brightness.dark,
+      ),
+      title: 'FH Manager',
     );
   }
 }

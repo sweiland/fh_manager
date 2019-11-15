@@ -11,5 +11,3 @@ void main() {
 
   return runApp(CupertinoManageApp());
 }
-
-
