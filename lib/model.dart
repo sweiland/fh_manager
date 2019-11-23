@@ -50,8 +50,8 @@ class SubjectWithTasksTeachersAndColor {
   final List<Task> tasks;
   final Color color;
 
-  SubjectWithTasksTeachersAndColor(this.subject, this.teachers, this.tasks,
-      this.color);
+  SubjectWithTasksTeachersAndColor(
+      this.subject, this.teachers, this.tasks, this.color);
 }
 
 @UseMoor(
@@ -60,9 +60,9 @@ class SubjectWithTasksTeachersAndColor {
 class DataBase extends _$DataBase {
   DataBase()
       : super(FlutterQueryExecutor.inDatabaseFolder(
-    path: 'fhmanager.sqlite',
-    logStatements: true,
-  ));
+          path: 'fhmanager.sqlite',
+          logStatements: true,
+        ));
 
   @override
   int get schemaVersion => 1;

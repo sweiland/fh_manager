@@ -12,10 +12,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
-    var tasks = Provider
-        .of<DataBase>(context)
-        .colorDao
-        .allColors;
+    var tasks = Provider.of<DataBase>(context).colorDao.allColors;
     return CustomScrollView(slivers: <Widget>[
       CupertinoSliverNavigationBar(
         largeTitle: Text('FH Manager'),
@@ -27,17 +24,17 @@ class _HomeTabState extends State<HomeTab> {
           delegate: SliverChildListDelegate([
             Container(
                 child: FutureBuilder(
-                  future: tasks,
-                  builder: (context, snapshot) {
-                    return snapshot.hasData
-                        ? ListView.builder(itemBuilder: (context, index) {
-                      return snapshot.data[index].entry;
-                    })
-                        : Center(
-                      child: CupertinoActivityIndicator(),
-                    );
-                  },
-                ))
+              future: tasks,
+              builder: (context, snapshot) {
+                return snapshot.hasData
+                    ? ListView.builder(itemBuilder: (context, index) {
+                        return snapshot.data[index].entry;
+                      })
+                    : Center(
+                        child: CupertinoActivityIndicator(),
+                      );
+              },
+            ))
           ]),
         ),
       ),
