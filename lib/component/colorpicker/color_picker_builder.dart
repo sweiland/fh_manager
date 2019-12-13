@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 
-import 'package:todo/utils/color_utils.dart';
+import 'package:FH_Manager/utils/color_utils.dart';
 
 class ColorPickerBuilder extends StatelessWidget {
   final Color color;

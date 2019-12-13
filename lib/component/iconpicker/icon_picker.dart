@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/component/todo_badge.dart';
+import 'package:FH_Manager/component/todo_badge.dart';
 
 class IconPicker extends StatefulWidget {
   final ValueChanged<IconData> onIconChanged;
@@ -1039,9 +1039,8 @@ class _IconPickerState extends State<IconPicker> {
               child: TodoBadge(
                 id: iconData.hashCode.toString(),
                 codePoint: iconData.codePoint,
-                outlineColor: iconData == selectedIconData
-                    ? widget.highlightColor
-                    : null,
+                outlineColor:
+                    iconData == selectedIconData ? widget.highlightColor : null,
                 color: iconData == selectedIconData
                     ? widget.highlightColor
                     : widget.unHighlightColor,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:todo/scopedmodel/todo_list_model.dart';
-import 'package:todo/model/task_model.dart';
-import 'package:todo/component/iconpicker/icon_picker_builder.dart';
-import 'package:todo/component/colorpicker/color_picker_builder.dart';
-import 'package:todo/utils/color_utils.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/model/task_model.dart';
+import 'package:FH_Manager/component/iconpicker/icon_picker_builder.dart';
+import 'package:FH_Manager/component/colorpicker/color_picker_builder.dart';
+import 'package:FH_Manager/utils/color_utils.dart';
 
 class AddTaskScreen extends StatefulWidget {
   AddTaskScreen();
@@ -124,11 +124,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.addTask(Task(
-                      newTask,
-                      codePoint: taskIcon.codePoint,
-                      color: taskColor.value
-                    ));
+                    model.addTask(Task(newTask,
+                        codePoint: taskIcon.codePoint, color: taskColor.value));
                     Navigator.pop(context);
                   }
                 },

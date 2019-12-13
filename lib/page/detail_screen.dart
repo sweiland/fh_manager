@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:todo/scopedmodel/todo_list_model.dart';
-import 'package:todo/task_progress_indicator.dart';
-import 'package:todo/component/todo_badge.dart';
-import 'package:todo/model/hero_id_model.dart';
-import 'package:todo/model/task_model.dart';
-import 'package:todo/utils/color_utils.dart';
-import 'package:todo/page/add_todo_screen.dart';
-import 'package:todo/page/edit_task_screen.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/task_progress_indicator.dart';
+import 'package:FH_Manager/component/todo_badge.dart';
+import 'package:FH_Manager/model/hero_id_model.dart';
+import 'package:FH_Manager/model/task_model.dart';
+import 'package:FH_Manager/utils/color_utils.dart';
+import 'package:FH_Manager/page/add_todo_screen.dart';
+import 'package:FH_Manager/page/edit_task_screen.dart';
 
 class DetailScreen extends StatefulWidget {
   final String taskId;
@@ -25,7 +25,8 @@ class DetailScreen extends StatefulWidget {
   }
 }
 
-class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderStateMixin {
+class _DetailScreenState extends State<DetailScreen>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Offset> _animation;
 
@@ -74,14 +75,15 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
         Task _task;
 
         try {
-         _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
+          _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
         } catch (e) {
           return Container(
             color: Colors.white,
           );
         }
 
-        var _todos = model.todos.where((it) => it.parent == widget.taskId).toList();
+        var _todos =
+            model.todos.where((it) => it.parent == widget.taskId).toList();
         var _hero = widget.heroIds;
         var _color = ColorUtils.getColorFrom(id: _task.color);
         var _icon = IconData(_task.codePoint, fontFamily: 'MaterialIcons');
@@ -152,7 +154,7 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                       ),
                       Container(
                         child: Hero(
-                          tag: 'title_hero_unused',//_hero.titleId,
+                          tag: 'title_hero_unused', //_hero.titleId,
                           child: Text(_task.name,
                               style: Theme.of(context)
                                   .textTheme

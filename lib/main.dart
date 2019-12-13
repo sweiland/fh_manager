@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:todo/scopedmodel/todo_list_model.dart';
-import 'package:todo/gradient_background.dart';
-import 'package:todo/task_progress_indicator.dart';
-import 'package:todo/page/add_task_screen.dart';
-import 'package:todo/model/hero_id_model.dart';
-import 'package:todo/model/task_model.dart';
-import 'package:todo/route/scale_route.dart';
-import 'package:todo/utils/color_utils.dart';
-import 'package:todo/utils/datetime_utils.dart';
-import 'package:todo/page/detail_screen.dart';
-import 'package:todo/component/todo_badge.dart';
-import 'package:todo/page/privacy_policy.dart';
-import 'package:todo/model/data/choice_card.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/gradient_background.dart';
+import 'package:FH_Manager/task_progress_indicator.dart';
+import 'package:FH_Manager/page/add_task_screen.dart';
+import 'package:FH_Manager/model/hero_id_model.dart';
+import 'package:FH_Manager/model/task_model.dart';
+import 'package:FH_Manager/route/scale_route.dart';
+import 'package:FH_Manager/utils/color_utils.dart';
+import 'package:FH_Manager/utils/datetime_utils.dart';
+import 'package:FH_Manager/page/detail_screen.dart';
+import 'package:FH_Manager/component/todo_badge.dart';
+import 'package:FH_Manager/page/privacy_policy.dart';
+import 'package:FH_Manager/model/data/choice_card.dart';
 
 void main() => runApp(MyApp());
 
@@ -59,7 +59,6 @@ class MyHomePage extends StatefulWidget {
   }
 
   String currentDay(BuildContext context) {
-
     return DateTimeUtils.currentDay;
   }
 

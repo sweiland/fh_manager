@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:todo/scopedmodel/todo_list_model.dart';
-import 'package:todo/model/task_model.dart';
-import 'package:todo/component/iconpicker/icon_picker_builder.dart';
-import 'package:todo/component/colorpicker/color_picker_builder.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/model/task_model.dart';
+import 'package:FH_Manager/component/iconpicker/icon_picker_builder.dart';
+import 'package:FH_Manager/component/colorpicker/color_picker_builder.dart';
 
 class EditTaskScreen extends StatefulWidget {
   final String taskId;
@@ -12,12 +12,11 @@ class EditTaskScreen extends StatefulWidget {
   final Color color;
   final IconData icon;
 
-  EditTaskScreen({
-    @required this.taskId
-  , @required this.taskName
-  , @required this.color
-  , @required this.icon
-  });
+  EditTaskScreen(
+      {@required this.taskId,
+      @required this.taskName,
+      @required this.color,
+      @required this.icon});
 
   @override
   State<StatefulWidget> createState() {
@@ -26,7 +25,7 @@ class EditTaskScreen extends StatefulWidget {
 }
 
 class _EditCardScreenState extends State<EditTaskScreen> {
-  final  btnSaveTitle = "Save Changes";
+  final btnSaveTitle = "Save Changes";
   String newTask;
   Color taskColor;
   IconData taskIcon;
@@ -136,12 +135,10 @@ class _EditCardScreenState extends State<EditTaskScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.updateTask(Task(
-                      newTask,
-                      codePoint: taskIcon.codePoint,
-                      color: taskColor.value,
-                      id: widget.taskId
-                    ));
+                    model.updateTask(Task(newTask,
+                        codePoint: taskIcon.codePoint,
+                        color: taskColor.value,
+                        id: widget.taskId));
                     Navigator.pop(context);
                   }
                 },

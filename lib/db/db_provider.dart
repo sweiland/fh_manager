@@ -4,8 +4,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-import 'package:todo/model/todo_model.dart';
-import 'package:todo/model/task_model.dart';
+import 'package:FH_Manager/model/todo_model.dart';
+import 'package:FH_Manager/model/task_model.dart';
 
 class DBProvider {
   static Database _database;
@@ -14,17 +14,38 @@ class DBProvider {
   static final DBProvider db = DBProvider._();
 
   var todos = [
-    Todo("Vegetables", parent: '1',),
-    Todo("Birthday gift", parent: '1',),
+    Todo(
+      "Vegetables",
+      parent: '1',
+    ),
+    Todo(
+      "Birthday gift",
+      parent: '1',
+    ),
     Todo("Chocolate cookies", parent: '1', isCompleted: 1),
-    Todo("20 pushups", parent: '2',),
-    Todo("Tricep", parent: '2',),
-    Todo("15 burpees (3 sets)", parent: '2',),
+    Todo(
+      "20 pushups",
+      parent: '2',
+    ),
+    Todo(
+      "Tricep",
+      parent: '2',
+    ),
+    Todo(
+      "15 burpees (3 sets)",
+      parent: '2',
+    ),
   ];
 
   var tasks = [
-    Task('Shopping', id: '1',  color: Colors.purple.value, codePoint: Icons.shopping_cart.codePoint),
-    Task('Workout', id: '2', color: Colors.pink.value, codePoint: Icons.fitness_center.codePoint),
+    Task('Shopping',
+        id: '1',
+        color: Colors.purple.value,
+        codePoint: Icons.shopping_cart.codePoint),
+    Task('Workout',
+        id: '2',
+        color: Colors.pink.value,
+        codePoint: Icons.fitness_center.codePoint),
   ];
 
   Future<Database> get database async {
@@ -45,9 +66,8 @@ class DBProvider {
 
   initDB() async {
     String path = await _dbPath;
-    return await openDatabase(path, version: 1, onOpen: (db) {
-
-    }, onCreate: (Database db, int version) async {
+    return await openDatabase(path, version: 1, onOpen: (db) {},
+        onCreate: (Database db, int version) async {
       print("DBProvider:: onCreate()");
       await db.execute("CREATE TABLE Task ("
           "id TEXT PRIMARY KEY,"
