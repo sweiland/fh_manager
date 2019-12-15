@@ -1,51 +1,55 @@
-import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-import 'package:FH_Manager/model/todo_model.dart';
+import 'package:FH_Manager/model/subject_model.dart';
 import 'package:FH_Manager/model/task_model.dart';
+import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DBProvider {
   static Database _database;
 
   DBProvider._();
+
   static final DBProvider db = DBProvider._();
 
   var todos = [
-    Todo(
-      "Vegetables",
+    Task(
+      'Course Becker',
+      dueDate: '2019-12-09T13:45',
+      description: 'Vuforia',
+      parent: '1',
+      isCompleted: 1,
+    ),
+    Task(
+      "Course Zeya",
+      dueDate: '2019-12-16T13:15',
+      description: 'FIDO2',
       parent: '1',
     ),
-    Todo(
-      "Birthday gift",
+    Task(
+      "Course Reitbauer",
+      dueDate: '2020-01-13T13:00',
+      description: 'MRTK',
       parent: '1',
     ),
-    Todo("Chocolate cookies", parent: '1', isCompleted: 1),
-    Todo(
-      "20 pushups",
+    Task(
+      "OPMGT Abschlussübung",
+      dueDate: '2019-12-17',
       parent: '2',
-    ),
-    Todo(
-      "Tricep",
-      parent: '2',
-    ),
-    Todo(
-      "15 burpees (3 sets)",
-      parent: '2',
-    ),
+    )
   ];
 
   var tasks = [
-    Task('Shopping',
+    Subject('WF-ENG',
         id: '1',
-        color: Colors.purple.value,
-        codePoint: Icons.shopping_cart.codePoint),
-    Task('Workout',
+        color: Colors.blueGrey.value,
+        codePoint: Icons.computer.codePoint),
+    Subject('OPMGT',
         id: '2',
-        color: Colors.pink.value,
-        codePoint: Icons.fitness_center.codePoint),
+        color: Colors.deepOrange.value,
+        codePoint: Icons.business_center.codePoint),
   ];
 
   Future<Database> get database async {
@@ -69,82 +73,84 @@ class DBProvider {
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       print("DBProvider:: onCreate()");
-      await db.execute("CREATE TABLE Task ("
+      await db.execute("CREATE TABLE Subject ("
           "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "color INTEGER,"
           "code_point INTEGER"
           ")");
-      await db.execute("CREATE TABLE Todo ("
+      await db.execute("CREATE TABLE Task ("
           "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "parent TEXT,"
-          "completed INTEGER NOT NULL DEFAULT 0"
+          "completed INTEGER NOT NULL DEFAULT 0,"
+          "description TEXT,"
+          "dueDate TEXT"
           ")");
     });
   }
 
-  insertBulkTask(List<Task> tasks) async {
+  insertBulkTask(List<Subject> tasks) async {
     final db = await database;
     tasks.forEach((it) async {
-      var res = await db.insert("Task", it.toJson());
+      var res = await db.insert("Subject", it.toJson());
       print("Task ${it.id} = $res");
     });
   }
 
-  insertBulkTodo(List<Todo> todos) async {
+  insertBulkTodo(List<Task> todos) async {
     final db = await database;
     todos.forEach((it) async {
-      var res = await db.insert("Todo", it.toJson());
+      var res = await db.insert("Task", it.toJson());
       print("Todo ${it.id} = $res");
     });
   }
 
-  Future<List<Task>> getAllTask() async {
+  Future<List<Subject>> getAllTask() async {
+    final db = await database;
+    var result = await db.query('Subject');
+    return result.map((it) => Subject.fromJson(it)).toList();
+  }
+
+  Future<List<Task>> getAllTodo() async {
     final db = await database;
     var result = await db.query('Task');
     return result.map((it) => Task.fromJson(it)).toList();
   }
 
-  Future<List<Todo>> getAllTodo() async {
-    final db = await database;
-    var result = await db.query('Todo');
-    return result.map((it) => Todo.fromJson(it)).toList();
-  }
-
-  Future<int> updateTodo(Todo todo) async {
+  Future<int> updateTodo(Task todo) async {
     final db = await database;
     return db
-        .update('Todo', todo.toJson(), where: 'id = ?', whereArgs: [todo.id]);
+        .update('Task', todo.toJson(), where: 'id = ?', whereArgs: [todo.id]);
   }
 
-  Future<int> removeTodo(Todo todo) async {
+  Future<int> removeTodo(Task todo) async {
     final db = await database;
-    return db.delete('Todo', where: 'id = ?', whereArgs: [todo.id]);
+    return db.delete('Task', where: 'id = ?', whereArgs: [todo.id]);
   }
 
-  Future<int> insertTodo(Todo todo) async {
+  Future<int> insertTodo(Task todo) async {
     final db = await database;
-    return db.insert('Todo', todo.toJson());
+    return db.insert('Task', todo.toJson());
   }
 
-  Future<int> insertTask(Task task) async {
+  Future<int> insertTask(Subject task) async {
     final db = await database;
-    return db.insert('Task', task.toJson());
+    return db.insert('Subject', task.toJson());
   }
 
-  Future<void> removeTask(Task task) async {
+  Future<void> removeTask(Subject task) async {
     final db = await database;
     return db.transaction<void>((txn) async {
-      await txn.delete('Todo', where: 'parent = ?', whereArgs: [task.id]);
-      await txn.delete('Task', where: 'id = ?', whereArgs: [task.id]);
+      await txn.delete('Task', where: 'parent = ?', whereArgs: [task.id]);
+      await txn.delete('Subject', where: 'id = ?', whereArgs: [task.id]);
     });
   }
 
-  Future<int> updateTask(Task task) async {
+  Future<int> updateTask(Subject task) async {
     final db = await database;
-    return db
-        .update('Task', task.toJson(), where: 'id = ?', whereArgs: [task.id]);
+    return db.update('Subject', task.toJson(),
+        where: 'id = ?', whereArgs: [task.id]);
   }
 
   Future<String> get _localPath async {

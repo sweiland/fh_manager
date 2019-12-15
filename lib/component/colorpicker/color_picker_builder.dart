@@ -1,7 +1,6 @@
+import 'package:FH_Manager/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
-
-import 'package:FH_Manager/utils/color_utils.dart';
 
 class ColorPickerBuilder extends StatelessWidget {
   final Color color;
@@ -25,7 +24,7 @@ class ColorPickerBuilder extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Select a color'),
+                    title: Text('Select a Color'),
                     content: SingleChildScrollView(
                       child: BlockPicker(
                         availableColors: ColorUtils.defaultColors,

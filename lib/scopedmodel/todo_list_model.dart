@@ -1,27 +1,30 @@
 // import 'dart:convert';
 // import 'dart:io';
+import 'package:FH_Manager/db/db_provider.dart';
+import 'package:FH_Manager/model/subject_model.dart';
+import 'package:FH_Manager/model/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-// import 'package:objectdb/objectdb.dart';
-
-import 'package:FH_Manager/model/todo_model.dart';
-import 'package:FH_Manager/model/task_model.dart';
-import 'package:FH_Manager/db/db_provider.dart';
 
 class TodoListModel extends Model {
   // ObjectDB db;
   var _db = DBProvider.db;
-  List<Todo> get todos => _todos.toList();
-  List<Task> get tasks => _tasks.toList();
-  int getTaskCompletionPercent(Task task) => _taskCompletionPercentage[task.id];
-  int getTotalTodosFrom(Task task) =>
+
+  List<Task> get todos => _todos.toList();
+
+  List<Subject> get tasks => _tasks.toList();
+
+  int getTaskCompletionPercent(Subject task) =>
+      _taskCompletionPercentage[task.id];
+
+  int getTotalTodosFrom(Subject task) =>
       todos.where((it) => it.parent == task.id).length;
+
   bool get isLoading => _isLoading;
 
   bool _isLoading = false;
-  List<Task> _tasks = [];
-  List<Todo> _todos = [];
+  List<Subject> _tasks = [];
+  List<Task> _todos = [];
   Map<String, int> _taskCompletionPercentage = Map();
 
   static TodoListModel of(BuildContext context) =>
@@ -57,14 +60,14 @@ class TodoListModel extends Model {
     // DBProvider.db.closeDB();
   }
 
-  void addTask(Task task) {
+  void addTask(Subject task) {
     _tasks.add(task);
     _calcTaskCompletionPercent(task.id);
     _db.insertTask(task);
     notifyListeners();
   }
 
-  void removeTask(Task task) {
+  void removeTask(Subject task) {
     _db.removeTask(task).then((_) {
       _tasks.removeWhere((it) => it.id == task.id);
       _todos.removeWhere((it) => it.parent == task.id);
@@ -72,7 +75,7 @@ class TodoListModel extends Model {
     });
   }
 
-  void updateTask(Task task) {
+  void updateTask(Subject task) {
     var oldTask = _tasks.firstWhere((it) => it.id == task.id);
     var replaceIndex = _tasks.indexOf(oldTask);
     _tasks.replaceRange(replaceIndex, replaceIndex + 1, [task]);
@@ -80,21 +83,21 @@ class TodoListModel extends Model {
     notifyListeners();
   }
 
-  void removeTodo(Todo todo) {
+  void removeTodo(Task todo) {
     _todos.removeWhere((it) => it.id == todo.id);
     _syncJob(todo);
     _db.removeTodo(todo);
     notifyListeners();
   }
 
-  void addTodo(Todo todo) {
+  void addTodo(Task todo) {
     _todos.add(todo);
     _syncJob(todo);
     _db.insertTodo(todo);
     notifyListeners();
   }
 
-  void updateTodo(Todo todo) {
+  void updateTodo(Task todo) {
     var oldTodo = _todos.firstWhere((it) => it.id == todo.id);
     var replaceIndex = _todos.indexOf(oldTodo);
     _todos.replaceRange(replaceIndex, replaceIndex + 1, [todo]);
@@ -105,7 +108,7 @@ class TodoListModel extends Model {
     notifyListeners();
   }
 
-  _syncJob(Todo todo) {
+  _syncJob(Task todo) {
     _calcTaskCompletionPercent(todo.parent);
     // _syncTodoToDB();
   }
@@ -124,7 +127,7 @@ class TodoListModel extends Model {
     // return todos.fold(0, (total, todo) => todo.isCompleted ? total + scoreOfTask : total);
   }
 
-  // Future<int> _syncTodoToDB() async {
-  //   return await db.update({'user': 'guest'}, {'todos': _todos});
-  // }
+// Future<int> _syncTodoToDB() async {
+//   return await db.update({'user': 'guest'}, {'todos': _todos});
+// }
 }

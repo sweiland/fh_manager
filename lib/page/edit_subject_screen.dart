@@ -1,10 +1,9 @@
+import 'package:FH_Manager/component/colorpicker/color_picker_builder.dart';
+import 'package:FH_Manager/component/iconpicker/icon_picker_builder.dart';
+import 'package:FH_Manager/model/subject_model.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
-import 'package:FH_Manager/model/task_model.dart';
-import 'package:FH_Manager/component/iconpicker/icon_picker_builder.dart';
-import 'package:FH_Manager/component/colorpicker/color_picker_builder.dart';
 
 class EditTaskScreen extends StatefulWidget {
   final String taskId;
@@ -51,7 +50,7 @@ class _EditCardScreenState extends State<EditTaskScreen> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              'Edit Category',
+              'Edit ' + newTask,
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -67,7 +66,7 @@ class _EditCardScreenState extends State<EditTaskScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Category will help you group related task!',
+                  'Add your subjects here, so you can add Tasks to them.',
                   style: TextStyle(
                       color: Colors.black38,
                       fontWeight: FontWeight.w600,
@@ -85,7 +84,7 @@ class _EditCardScreenState extends State<EditTaskScreen> {
                   autofocus: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Category Name...',
+                      hintText: 'Subject Name',
                       hintStyle: TextStyle(
                         color: Colors.black26,
                       )),
@@ -128,14 +127,13 @@ class _EditCardScreenState extends State<EditTaskScreen> {
                 onPressed: () {
                   if (newTask.isEmpty) {
                     final snackBar = SnackBar(
-                      content: Text(
-                          'Ummm... It seems that you are trying to add an invisible task which is not allowed in this realm.'),
+                      content: Text('Please provide a name for your Subject!'),
                       backgroundColor: taskColor,
                     );
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.updateTask(Task(newTask,
+                    model.updateTask(Subject(newTask,
                         codePoint: taskIcon.codePoint,
                         color: taskColor.value,
                         id: widget.taskId));

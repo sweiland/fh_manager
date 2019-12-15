@@ -5,10 +5,10 @@ import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
 import 'package:FH_Manager/task_progress_indicator.dart';
 import 'package:FH_Manager/component/todo_badge.dart';
 import 'package:FH_Manager/model/hero_id_model.dart';
-import 'package:FH_Manager/model/task_model.dart';
+import 'package:FH_Manager/model/subject_model.dart';
 import 'package:FH_Manager/utils/color_utils.dart';
-import 'package:FH_Manager/page/add_todo_screen.dart';
-import 'package:FH_Manager/page/edit_task_screen.dart';
+import 'package:FH_Manager/page/add_task_screen.dart';
+import 'package:FH_Manager/page/edit_subject_screen.dart';
 
 class DetailScreen extends StatefulWidget {
   final String taskId;
@@ -72,7 +72,7 @@ class _DetailScreenState extends State<DetailScreen>
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
-        Task _task;
+        Subject _task;
 
         try {
           _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
@@ -144,7 +144,7 @@ class _DetailScreenState extends State<DetailScreen>
                         child: Hero(
                           tag: _hero.remainingTaskId,
                           child: Text(
-                            "${model.getTotalTodosFrom(_task)} Task",
+                            "${model.getTotalTodosFrom(_task)} Tasks",
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
@@ -187,32 +187,44 @@ class _DetailScreenState extends State<DetailScreen>
                         return Container(
                           padding: EdgeInsets.only(left: 22.0, right: 22.0),
                           child: ListTile(
-                            onTap: () => model.updateTodo(todo.copy(
-                                isCompleted: todo.isCompleted == 1 ? 0 : 1)),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 8.0),
-                            leading: Checkbox(
-                                onChanged: (value) => model.updateTodo(
-                                    todo.copy(isCompleted: value ? 1 : 0)),
-                                value: todo.isCompleted == 1 ? true : false),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete_outline),
-                              onPressed: () => model.removeTodo(todo),
-                            ),
-                            title: Text(
-                              todo.name,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: todo.isCompleted == 1
-                                    ? _color
-                                    : Colors.black54,
-                                decoration: todo.isCompleted == 1
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
+                              onLongPress: () => model.updateTodo(todo.copy(
+                                  isCompleted: todo.isCompleted == 1 ? 0 : 1)),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 0, vertical: 8.0),
+                              leading: Checkbox(
+                                  onChanged: (value) => model.updateTodo(
+                                      todo.copy(isCompleted: value ? 1 : 0)),
+                                  value: todo.isCompleted == 1 ? true : false),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete_outline),
+                                onPressed: () => model.removeTodo(todo),
                               ),
-                            ),
-                          ),
+                              title: Text(
+                                todo.name,
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: todo.isCompleted == 1
+                                      ? _color
+                                      : Colors.black54,
+                                  decoration: todo.isCompleted == 1
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                              subtitle: Text(
+                                todo.description ?? '',
+                              ),
+                              onTap: () {
+                                if (todo.dueDate != null) {
+                                  final snackBar = SnackBar(
+                                    content: Text(todo.dueDate.toString()),
+                                    backgroundColor: _color,
+                                  );
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  // _scaffoldKey.currentState.showSnackBar(snackBar);
+                                }
+                              }),
                         );
                       },
                       itemCount: _todos.length + 1,
@@ -232,7 +244,7 @@ class _DetailScreenState extends State<DetailScreen>
                   ),
                 );
               },
-              tooltip: 'New Todo',
+              tooltip: 'New Tasl',
               backgroundColor: _color,
               foregroundColor: Colors.white,
               child: Icon(Icons.add),
@@ -272,12 +284,12 @@ class SimpleAlertDialog extends StatelessWidget {
           barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Delete this card?'),
+              title: Text('Delete this Subject?'),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
                     Text(
-                        'This is a one way street! Deleting this will remove all the task assigned in this card.'),
+                        'This will delete all Tasks associated with the Subject!'),
                   ],
                 ),
               ),

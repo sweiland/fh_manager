@@ -1,19 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-
-import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/component/todo_badge.dart';
 import 'package:FH_Manager/gradient_background.dart';
-import 'package:FH_Manager/task_progress_indicator.dart';
-import 'package:FH_Manager/page/add_task_screen.dart';
 import 'package:FH_Manager/model/hero_id_model.dart';
-import 'package:FH_Manager/model/task_model.dart';
+import 'package:FH_Manager/model/subject_model.dart';
+import 'package:FH_Manager/page/add_subject_screen.dart';
+import 'package:FH_Manager/page/detail_screen.dart';
 import 'package:FH_Manager/route/scale_route.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/task_progress_indicator.dart';
 import 'package:FH_Manager/utils/color_utils.dart';
 import 'package:FH_Manager/utils/datetime_utils.dart';
-import 'package:FH_Manager/page/detail_screen.dart';
-import 'package:FH_Manager/component/todo_badge.dart';
-import 'package:FH_Manager/page/privacy_policy.dart';
-import 'package:FH_Manager/model/data/choice_card.dart';
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 void main() => runApp(MyApp());
 
@@ -49,7 +46,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  HeroId _generateHeroIds(Task task) {
+  HeroId _generateHeroIds(Subject task) {
     return HeroId(
       codePointId: 'code_point_id_${task.id}',
       progressId: 'progress_id_${task.id}',
@@ -108,23 +105,6 @@ class _MyHomePageState extends State<MyHomePage>
             centerTitle: true,
             elevation: 0.0,
             backgroundColor: Colors.transparent,
-            actions: [
-              PopupMenuButton<Choice>(
-                onSelected: (choice) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          PrivacyPolicyScreen()));
-                },
-                itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Text(choice.title),
-                    );
-                  }).toList();
-                },
-              ),
-            ],
           ),
           body: _isLoading
               ? Center(
@@ -161,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage>
                             ),
                             Container(height: 16.0),
                             Text(
-                              'You have ${_todos.where((todo) => todo.isCompleted == 0).length} tasks to complete',
+                              'You have ${_todos.where((todo) => todo.isCompleted == 0).length} Tasks to complete',
                               style: Theme.of(context).textTheme.body1.copyWith(
                                   color: Colors.white.withOpacity(0.7)),
                             ),
@@ -277,7 +257,7 @@ class AddPageCard extends StatelessWidget {
                   height: 8.0,
                 ),
                 Text(
-                  'Add Category',
+                  'Add Subject',
                   style: TextStyle(color: color),
                 ),
               ],
@@ -293,12 +273,12 @@ typedef TaskGetter<T, V> = V Function(T value);
 
 class TaskCard extends StatelessWidget {
   final GlobalKey backdropKey;
-  final Task task;
+  final Subject task;
   final Color color;
 
-  final TaskGetter<Task, int> getTotalTodos;
-  final TaskGetter<Task, HeroId> getHeroIds;
-  final TaskGetter<Task, int> getTaskCompletionPercent;
+  final TaskGetter<Subject, int> getTotalTodos;
+  final TaskGetter<Subject, HeroId> getHeroIds;
+  final TaskGetter<Subject, int> getTaskCompletionPercent;
 
   TaskCard({
     @required this.backdropKey,
@@ -368,7 +348,7 @@ class TaskCard extends StatelessWidget {
                 child: Hero(
                   tag: heroIds.remainingTaskId,
                   child: Text(
-                    "${getTotalTodos(task)} Task",
+                    "${getTotalTodos(task)} Tasks",
                     style: Theme.of(context)
                         .textTheme
                         .body1

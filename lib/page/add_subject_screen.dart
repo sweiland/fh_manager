@@ -1,36 +1,33 @@
+import 'package:FH_Manager/component/colorpicker/color_picker_builder.dart';
+import 'package:FH_Manager/component/iconpicker/icon_picker_builder.dart';
+import 'package:FH_Manager/model/subject_model.dart';
+import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
+import 'package:FH_Manager/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
-import 'package:FH_Manager/model/todo_model.dart';
-import 'package:FH_Manager/utils/color_utils.dart';
-import 'package:FH_Manager/component/todo_badge.dart';
-import 'package:FH_Manager/model/hero_id_model.dart';
-
-class AddTodoScreen extends StatefulWidget {
-  final String taskId;
-  final HeroId heroIds;
-
-  AddTodoScreen({
-    @required this.taskId,
-    @required this.heroIds,
-  });
+class AddTaskScreen extends StatefulWidget {
+  AddTaskScreen();
 
   @override
   State<StatefulWidget> createState() {
-    return _AddTodoScreenState();
+    return _AddTaskScreenState();
   }
 }
 
-class _AddTodoScreenState extends State<AddTodoScreen> {
+class _AddTaskScreenState extends State<AddTaskScreen> {
   String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Color taskColor;
+  IconData taskIcon;
 
   @override
   void initState() {
     super.initState();
     setState(() {
       newTask = '';
+      taskColor = ColorUtils.defaultColors[0];
+      taskIcon = Icons.work;
     });
   }
 
@@ -38,21 +35,12 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
-        if (model.tasks.isEmpty) {
-          // Loading
-          return Container(
-            color: Colors.white,
-          );
-        }
-
-        var _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
-        var _color = ColorUtils.getColorFrom(id: _task.color);
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              'New Task',
+              'New Subject',
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -68,7 +56,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'What task are you planning to perfrom?',
+                  'Add your subjects here, so you can add Tasks to them.',
                   style: TextStyle(
                       color: Colors.black38,
                       fontWeight: FontWeight.w600,
@@ -81,11 +69,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   onChanged: (text) {
                     setState(() => newTask = text);
                   },
-                  cursorColor: _color,
+                  cursorColor: taskColor,
                   autofocus: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Your Task...',
+                      hintText: 'Subject Name',
                       hintStyle: TextStyle(
                         color: Colors.black26,
                       )),
@@ -99,27 +87,20 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 ),
                 Row(
                   children: [
-                    TodoBadge(
-                      codePoint: _task.codePoint,
-                      color: _color,
-                      id: widget.heroIds.codePointId,
-                      size: 20.0,
-                    ),
+                    ColorPickerBuilder(
+                        color: taskColor,
+                        onColorChanged: (newColor) =>
+                            setState(() => taskColor = newColor)),
                     Container(
-                      width: 16.0,
+                      width: 22.0,
                     ),
-                    Hero(
-                      child: Text(
-                        _task.name,
-                        style: TextStyle(
-                          color: Colors.black38,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      tag: "not_using_right_now", //widget.heroIds.titleId,
-                    ),
+                    IconPickerBuilder(
+                        iconData: taskIcon,
+                        highlightColor: taskColor,
+                        action: (newIcon) =>
+                            setState(() => taskIcon = newIcon)),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -128,24 +109,21 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           floatingActionButton: Builder(
             builder: (BuildContext context) {
               return FloatingActionButton.extended(
-                heroTag: 'fab_new_task',
-                icon: Icon(Icons.add),
-                backgroundColor: _color,
-                label: Text('Create Task'),
+                heroTag: 'fab_new_card',
+                icon: Icon(Icons.save),
+                backgroundColor: taskColor,
+                label: Text('Add Subject'),
                 onPressed: () {
                   if (newTask.isEmpty) {
                     final snackBar = SnackBar(
-                      content: Text(
-                          'Ummm... It seems that you are trying to add an invisible task which is not allowed in this realm.'),
-                      backgroundColor: _color,
+                      content: Text('Please provide a name for the subject.'),
+                      backgroundColor: taskColor,
                     );
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.addTodo(Todo(
-                      newTask,
-                      parent: _task.id,
-                    ));
+                    model.addTask(Subject(newTask,
+                        codePoint: taskIcon.codePoint, color: taskColor.value));
                     Navigator.pop(context);
                   }
                 },
@@ -157,6 +135,5 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     );
   }
 }
-
 // Reason for wraping fab with builder (to get scafold context)
 // https://stackoverflow.com/a/52123080/4934757
