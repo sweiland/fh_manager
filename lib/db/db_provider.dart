@@ -77,8 +77,6 @@ class DBProvider {
           "name TEXT,"
           "parent TEXT,"
           "completed INTEGER NOT NULL DEFAULT 0,"
-          "description TEXT,"
-          "dueDate TEXT"
           ")");
     });
   }
