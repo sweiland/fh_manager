@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: ''),
     );
-
     return ScopedModel<TodoListModel>(
       model: TodoListModel(),
       child: app,

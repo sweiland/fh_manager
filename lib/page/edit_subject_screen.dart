@@ -5,13 +5,13 @@ import 'package:FH_Manager/scopedmodel/todo_list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class EditTaskScreen extends StatefulWidget {
+class EditSubjectScreen extends StatefulWidget {
   final String taskId;
   final String taskName;
   final Color color;
   final IconData icon;
 
-  EditTaskScreen(
+  EditSubjectScreen(
       {@required this.taskId,
       @required this.taskName,
       @required this.color,
@@ -23,7 +23,7 @@ class EditTaskScreen extends StatefulWidget {
   }
 }
 
-class _EditCardScreenState extends State<EditTaskScreen> {
+class _EditCardScreenState extends State<EditSubjectScreen> {
   final btnSaveTitle = "Save Changes";
   String newTask;
   Color taskColor;

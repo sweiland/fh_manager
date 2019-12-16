@@ -1,3 +1,4 @@
+import 'package:FH_Manager/page/task_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -105,7 +106,7 @@ class _DetailScreenState extends State<DetailScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditTaskScreen(
+                        builder: (context) => EditSubjectScreen(
                           taskId: _task.id,
                           taskName: _task.name,
                           icon: _icon,
@@ -187,8 +188,19 @@ class _DetailScreenState extends State<DetailScreen>
                         return Container(
                           padding: EdgeInsets.only(left: 22.0, right: 22.0),
                           child: ListTile(
-                              onLongPress: () => model.updateTodo(todo.copy(
-                                  isCompleted: todo.isCompleted == 1 ? 0 : 1)),
+                              onLongPress: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditTaskScreen(
+                                      taskId: todo.id,
+                                      taskName: todo.name,
+                                      description: todo.description,
+                                      dueDate: todo.dueDate,
+                                    ),
+                                  ),
+                                );
+                              },
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 8.0),
                               leading: Checkbox(
@@ -244,7 +256,7 @@ class _DetailScreenState extends State<DetailScreen>
                   ),
                 );
               },
-              tooltip: 'New Tasl',
+              tooltip: 'New Task',
               backgroundColor: _color,
               foregroundColor: Colors.white,
               child: Icon(Icons.add),
