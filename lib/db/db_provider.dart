@@ -17,26 +17,19 @@ class DBProvider {
   var todos = [
     Task(
       'Course Becker',
-      dueDate: '2019-12-09T13:45',
-      description: 'Vuforia',
       parent: '1',
       isCompleted: 1,
     ),
     Task(
       "Course Zeya",
-      dueDate: '2019-12-16T13:15',
-      description: 'FIDO2',
       parent: '1',
     ),
     Task(
       "Course Reitbauer",
-      dueDate: '2020-01-13T13:00',
-      description: 'MRTK',
       parent: '1',
     ),
     Task(
       "OPMGT Abschlussübung",
-      dueDate: '2019-12-17',
       parent: '2',
     )
   ];

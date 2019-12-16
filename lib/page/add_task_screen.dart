@@ -24,8 +24,6 @@ class AddTodoScreen extends StatefulWidget {
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
   String newTask;
-  String description;
-  String dueDate;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -33,8 +31,6 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     super.initState();
     setState(() {
       newTask = '';
-      description = '';
-      dueDate = DateTime.now().toIso8601String();
     });
   }
 
@@ -98,40 +94,6 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       fontWeight: FontWeight.w500,
                       fontSize: 36.0),
                 ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() => description = text);
-                  },
-                  cursorColor: _color,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Description',
-                      hintStyle: TextStyle(
-                        color: Colors.black26,
-                      )),
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 24.0),
-                ),
-                TextField(
-                  onChanged: (text) {
-                    setState(() => dueDate = text);
-                  },
-                  cursorColor: _color,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Due Date and Time',
-                      hintStyle: TextStyle(
-                        color: Colors.black26,
-                      )),
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 24.0),
-                ),
                 Container(
                   height: 26.0,
                 ),
@@ -182,8 +144,6 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   } else {
                     model.addTodo(Task(
                       newTask,
-                      description: description,
-                      dueDate: dueDate,
                       parent: _task.id,
                     ));
                     Navigator.pop(context);

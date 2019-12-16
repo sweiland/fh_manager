@@ -8,17 +8,10 @@ part 'task_model.g.dart';
 class Task {
   final String id, parent;
   final String name;
-  final String description;
-  final String dueDate;
   @JsonKey(name: 'completed')
   final int isCompleted;
 
-  Task(this.name,
-      {@required this.parent,
-      this.description,
-      this.dueDate,
-      this.isCompleted = 0,
-      String id})
+  Task(this.name, {@required this.parent, this.isCompleted = 0, String id})
       : this.id = id ?? Uuid().generateV4();
 
   Task copy(
@@ -33,8 +26,6 @@ class Task {
       isCompleted: isCompleted ?? this.isCompleted,
       id: id ?? this.id,
       parent: parent ?? this.parent,
-      description: description ?? this.description,
-      dueDate: dueDate ?? this.dueDate,
     );
   }
 
